@@ -3,6 +3,7 @@ defmodule Node2Web.UserSocket do
 
   ## Channels
   # channel "room:*", Node2Web.RoomChannel
+  channel "telegram_source:*", Node2Web.TelegramSourceChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
