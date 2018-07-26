@@ -1,1 +1,39 @@
 /* This file is for your main application css. */
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  line-height: 22px;
+  overflow-x: hidden;
+}
+
+.container {
+  width: 75%;
+  height: 100%;
+  padding:20px;
+  background-color: #fff;
+  top: 100px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+#message-box {
+  border: 1px #000 solid;
+  padding: 0 0 0 5px;
+  min-height: 157px;
+  max-height: 225px;
+  overflow: scroll;
+}
+
+#message-form {
+  width: 250px;
+}
+
+#message-form textarea {
+  width: 250px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  margin-top: 5px;
+}
