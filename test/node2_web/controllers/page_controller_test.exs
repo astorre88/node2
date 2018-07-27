@@ -1,8 +1,17 @@
 defmodule Node2Web.PageControllerTest do
   use Node2Web.ConnCase
 
-  test "GET /", %{conn: conn} do
+  alias Node2.Chats
+
+  setup do
+    {:ok, message} = Chats.create_message(%{body: "Some message"})
+
+    {:ok, message: message}
+  end
+
+  test "GET /", %{conn: conn, message: message} do
     conn = get conn, "/"
-    assert html_response(conn, 200) =~ "Welcome to Phoenix!"
+    assert html_response(conn, 200) =~ "Send"
+    assert html_response(conn, 200) =~ message.body
   end
 end

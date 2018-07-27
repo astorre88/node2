@@ -17,3 +17,7 @@ config :node2, Node2.Repo,
   database: "node2_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+if File.exists?("config/test.local.exs") do
+  import_config "test.local.exs"
+end
