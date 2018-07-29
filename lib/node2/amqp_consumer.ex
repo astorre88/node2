@@ -1,5 +1,6 @@
 defmodule Node2.AmqpConsumer do
   require Logger
+
   use GenServer
   use AMQP
 
@@ -9,12 +10,14 @@ defmodule Node2.AmqpConsumer do
     GenServer.start_link(__MODULE__, [], [])
   end
 
-  @mq_url      "amqp://guest:guest@localhost"
-  @exchange    "node2_exchange"
-  @queue       "node2_queue"
-  @queue_error "#{@queue}_error"
-  @ws_topic    "telegram_source:lobby"
-  @ws_command  "shout"
+  @mq_url         "amqp://guest:guest@localhost"
+  @exchange       "node2_exchange"
+  @queue          "node2_queue"
+  @queue_error    "#{@queue}_error"
+  @ws_topic       "telegram_source:lobby"
+  @ws_command     "shout"
+  @error_exchange "x-dead-letter-exchange"
+  @error_key      "x-dead-letter-routing-key"
 
   def init(_opts) do
     conn = try_connect()
@@ -70,8 +73,8 @@ defmodule Node2.AmqpConsumer do
         @queue,
         durable: true,
         arguments: [
-          {"x-dead-letter-exchange", :longstr, ""},
-          {"x-dead-letter-routing-key", :longstr, @queue_error}
+          {@error_exchange, :longstr, ""},
+          {@error_key, :longstr, @queue_error}
         ]
       )
 
