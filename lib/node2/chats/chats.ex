@@ -22,6 +22,19 @@ defmodule Node2.Chats do
   end
 
   @doc """
+  Returns the ordered by sended key list of messages.
+
+  ## Examples
+
+      iex> fetch_ordered(:inserted_at)
+      [%Message{inserted_at: ~N[2018-07-29 14:45:27.309324]}, %Message{inserted_at: ~N[2018-07-29 14:46:05.698896]}, ...]
+
+  """
+  def fetch_ordered(constraint) do
+    Message |> order_by(^constraint) |> Repo.all()
+  end
+
+  @doc """
   Gets a single message.
 
   Raises `Ecto.NoResultsError` if the Message does not exist.
@@ -36,10 +49,6 @@ defmodule Node2.Chats do
 
   """
   def get_message!(id), do: Repo.get!(Message, id)
-
-  def last_message do
-    Repo.one(from m in Message, order_by: [desc: m.id], limit: 1)
-  end
 
   @doc """
   Creates a message.

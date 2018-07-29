@@ -44,7 +44,7 @@ defmodule Node2.AmqpConsumer do
   end
 
   def handle_info({:basic_deliver, payload, %{delivery_tag: tag, redelivered: redelivered}}, chan) do
-    spawn fn -> consume(chan, tag, redelivered, payload) end
+    spawn(fn -> consume(chan, tag, redelivered, payload) end)
     {:noreply, chan}
   end
 
@@ -52,32 +52,38 @@ defmodule Node2.AmqpConsumer do
     case Connection.open(@mq_url) do
       {:ok, conn} ->
         conn
+
       {:error, reason} ->
-        Logger.log(:error, "failed for #{inspect reason}")
-        :timer.sleep 5000
+        Logger.log(:error, "failed for #{inspect(reason)}")
+        :timer.sleep(5000)
         try_connect()
     end
   end
 
   defp setup_queue(chan) do
     {:ok, _} = Queue.declare(chan, @queue_error, durable: true)
+
     # Messages that cannot be delivered to any consumer in the main queue will be routed to the error queue
-    {:ok, _} = Queue.declare(chan, @queue,
-                             durable: true,
-                             arguments: [
-                               {"x-dead-letter-exchange", :longstr, ""},
-                               {"x-dead-letter-routing-key", :longstr, @queue_error}
-                             ]
-                            )
+    {:ok, _} =
+      Queue.declare(
+        chan,
+        @queue,
+        durable: true,
+        arguments: [
+          {"x-dead-letter-exchange", :longstr, ""},
+          {"x-dead-letter-routing-key", :longstr, @queue_error}
+        ]
+      )
+
     :ok = Exchange.fanout(chan, @exchange, durable: true)
     :ok = Queue.bind(chan, @queue, @exchange)
   end
 
   defp consume(channel, tag, redelivered, payload) do
     Chats.create_message(%{body: payload})
-    Node2Web.Endpoint.broadcast @ws_topic, @ws_command, %{body: payload}
+    Node2Web.Endpoint.broadcast(@ws_topic, @ws_command, %{body: payload})
 
-    :ok = Basic.ack channel, tag
+    :ok = Basic.ack(channel, tag)
     Logger.log(:info, "Consumed a #{payload}.")
   end
 end

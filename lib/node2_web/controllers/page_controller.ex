@@ -4,7 +4,7 @@ defmodule Node2Web.PageController do
   alias Node2.Chats
 
   def index(conn, _params) do
-    messages = Chats.list_messages
+    messages = Chats.fetch_ordered(:inserted_at)
     render conn, "index.html", messages: messages
   end
 end
