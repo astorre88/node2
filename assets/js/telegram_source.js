@@ -3,6 +3,9 @@ let TelegramSource = {
     let channel = socket.channel("telegram_source:lobby", {})
     channel.join()
     this.listenForChat(channel)
+
+    let messageBox = document.getElementById("message-box")
+    messageBox.scrollTop = messageBox.scrollHeight
   },
 
   listenForChat(channel) {
@@ -22,6 +25,7 @@ let TelegramSource = {
 
       messageBlock.insertAdjacentHTML('beforeend', payload.body)
       messageBox.appendChild(messageBlock)
+      messageBox.scrollTop = messageBox.scrollHeight
     })
   }
 }

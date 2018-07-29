@@ -1,17 +1,38 @@
 defmodule Node2Web.TelegramSourceChannel do
+  require Logger
+
   use Node2Web, :channel
+  use AMQP
 
   alias Node2.Chats
 
-  def join("telegram_source:lobby", _payload, socket) do
+  @mq_url      "amqp://guest:guest@localhost"
+  @mq_exchange "node1_exchange"
+  @ws_topic    "telegram_source:lobby"
+  @ws_command  "shout"
+
+  def join(@ws_topic, _payload, socket) do
     {:ok, socket}
   end
 
-  # It is also common to receive messages from the client and
-  # broadcast to everyone in the current topic (telegram_source:lobby).
-  def handle_in("shout", payload, socket) do
+  def handle_in(@ws_command, %{"body" => text} = payload, socket) do
     Chats.create_message(payload)
-    broadcast socket, "shout", payload
+    broadcast socket, @ws_command, payload
+
+    conn = try_connect()
+    {:ok, chan} = Channel.open(conn)
+    Basic.publish chan, @mq_exchange, "", text
     {:noreply, socket}
+  end
+
+  defp try_connect do
+    case Connection.open(@mq_url) do
+      {:ok, conn} ->
+        conn
+      {:error, reason} ->
+        Logger.log(:error, "failed for #{inspect reason}")
+        :timer.sleep 5000
+        try_connect()
+    end
   end
 end

@@ -14,6 +14,7 @@ defmodule Node2.Application do
       supervisor(Node2Web.Endpoint, []),
       # Start your own worker by calling: Node2.Worker.start_link(arg1, arg2, arg3)
       # worker(Node2.Worker, [arg1, arg2, arg3]),
+      worker(Node2.AmqpConsumer, []),
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
