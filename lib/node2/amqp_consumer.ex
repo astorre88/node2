@@ -10,7 +10,7 @@ defmodule Node2.AmqpConsumer do
     GenServer.start_link(__MODULE__, [], [])
   end
 
-  @mq_url         "amqp://guest:guest@localhost"
+  @mq_url         "amqp://guest:guest@rabbit"
   @exchange       "node2_exchange"
   @queue          "node2_queue"
   @queue_error    "#{@queue}_error"

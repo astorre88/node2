@@ -15,11 +15,18 @@ use Mix.Config
 # which you typically run after static files are built.
 config :node2, Node2Web.Endpoint,
   load_from_system_env: true,
-  url: [host: "example.com", port: 80],
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  url: [host: "${URL_HOST}", port: "${URL_PORT}"],
+  cache_static_manifest: "priv/static/cache_manifest.json",
+  secret_key_base: "${SECRET_KEY_BASE}",
+  server: true
 
 # Do not print debug messages in production
 config :logger, level: :info
+
+# Configure your database
+config :node2, Node2.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  url: "${DATABASE_URL}"
 
 # ## SSL Support
 #
@@ -58,7 +65,3 @@ config :logger, level: :info
 #
 #     config :node2, Node2Web.Endpoint, server: true
 #
-
-# Finally import the config/prod.secret.exs
-# which should be versioned separately.
-import_config "prod.secret.exs"
