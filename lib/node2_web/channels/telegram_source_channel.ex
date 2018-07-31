@@ -6,7 +6,7 @@ defmodule Node2Web.TelegramSourceChannel do
 
   alias Node2.Chats
 
-  @mq_url      "amqp://guest:guest@rabbit"
+  @mq_url      Application.get_env(:amqp, :mq_url)
   @mq_exchange "node1_exchange"
   @ws_topic    "telegram_source:lobby"
   @ws_command  "shout"

@@ -18,6 +18,9 @@ config :node2, Node2.Repo,
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
+config :amqp,
+  mq_url: "amqp://guest:guest@localhost"
+
 if File.exists?("config/test.local.exs") do
   import_config "test.local.exs"
 end

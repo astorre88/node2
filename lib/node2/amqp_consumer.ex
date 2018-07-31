@@ -10,7 +10,7 @@ defmodule Node2.AmqpConsumer do
     GenServer.start_link(__MODULE__, [], [])
   end
 
-  @mq_url         "amqp://guest:guest@rabbit"
+  @mq_url         Application.get_env(:amqp, :mq_url)
   @exchange       "node2_exchange"
   @queue          "node2_queue"
   @queue_error    "#{@queue}_error"
@@ -20,7 +20,7 @@ defmodule Node2.AmqpConsumer do
   @error_key      "x-dead-letter-routing-key"
 
   def init(_opts) do
-    rabbitmq_connect
+    rabbitmq_connect()
   end
 
   # Confirmation sent by the broker after registering this process as a consumer
@@ -44,7 +44,7 @@ defmodule Node2.AmqpConsumer do
   end
 
   def handle_info({:DOWN, _, :process, _pid, _reason}, _) do
-    {:ok, chan} = rabbitmq_connect
+    {:ok, chan} = rabbitmq_connect()
     {:noreply, chan}
   end
 
@@ -63,7 +63,7 @@ defmodule Node2.AmqpConsumer do
       {:error, _} ->
         # Reconnection loop
         :timer.sleep(10000)
-        rabbitmq_connect
+        rabbitmq_connect()
     end
   end
 

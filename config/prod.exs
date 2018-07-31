@@ -28,6 +28,9 @@ config :node2, Node2.Repo,
   adapter: Ecto.Adapters.Postgres,
   url: "${DATABASE_URL}"
 
+config :amqp,
+  mq_url: "amqp://guest:guest@rabbit"
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key
