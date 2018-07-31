@@ -22,6 +22,8 @@ RUN mix deps.compile
 
 COPY . /app
 
+RUN brunch build --type production
+
 RUN mix compile && \
     mix phx.digest && \
     mix release --verbose
