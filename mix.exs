@@ -42,7 +42,10 @@ defmodule Node2.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
       {:amqp, "~> 0.2.3"},
-      {:distillery, "~> 1.5", runtime: false}
+      {:distillery, "~> 1.5", runtime: false},
+
+      # Linters and checkers
+      {:credo, "~> 0.10.0", only: [:dev, :test], runtime: false}
     ]
   end
 

@@ -1,4 +1,8 @@
 defmodule Node2.ReleaseTasks do
+  @moduledoc """
+  Module with helper methods for run migration tasks.
+  """
+
   @start_apps [
     :crypto,
     :ssl,

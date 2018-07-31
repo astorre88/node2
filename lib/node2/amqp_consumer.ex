@@ -1,4 +1,9 @@
 defmodule Node2.AmqpConsumer do
+  @moduledoc """
+  RabbitMQ consumer process. Consumes rabbit queue messages,
+  saves them to DB and send them to WS channel.
+  """
+
   require Logger
 
   use GenServer
@@ -62,7 +67,7 @@ defmodule Node2.AmqpConsumer do
   
       {:error, _} ->
         # Reconnection loop
-        :timer.sleep(10000)
+        :timer.sleep(10_000)
         rabbitmq_connect()
     end
   end

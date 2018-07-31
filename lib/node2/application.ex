@@ -1,4 +1,8 @@
 defmodule Node2.Application do
+  @moduledoc """
+  Main application logic.
+  """
+
   use Application
 
   # See https://hexdocs.pm/elixir/Application.html

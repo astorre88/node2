@@ -1,4 +1,8 @@
 defmodule Node2.Chats.Message do
+  @moduledoc """
+  Message record schema.
+  """
+
   use Ecto.Schema
   import Ecto.Changeset
 

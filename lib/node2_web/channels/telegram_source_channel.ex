@@ -1,4 +1,8 @@
 defmodule Node2Web.TelegramSourceChannel do
+  @moduledoc """
+  WS channel logic.
+  """
+
   require Logger
 
   use Node2Web, :channel
